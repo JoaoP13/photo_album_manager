@@ -1,0 +1,9 @@
+# Node artifact files
+node_modules/
+dist/
+
+# Log files
+*.log
+s
+# Unit test reports
+TEST*.xml
