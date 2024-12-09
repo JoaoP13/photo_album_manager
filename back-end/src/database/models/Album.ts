@@ -1,7 +1,7 @@
 interface Album {
   id: number;
-  id_user: number;
-  name: string;
+  userId: number;
+  title: string;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

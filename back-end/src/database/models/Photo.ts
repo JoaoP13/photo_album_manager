@@ -1,9 +1,9 @@
 interface Photo {
   id: number;
-  id_album: string;
+  albumId: string;
   title: string;
   url: string;
-  thumbnail_url: string;
+  thumbnailUrl: string;
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;

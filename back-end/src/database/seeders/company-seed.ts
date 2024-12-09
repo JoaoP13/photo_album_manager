@@ -79,8 +79,10 @@ async function seedCompany(): Promise<void> {
           company.bs,
           company.created_at.toISOString(),
           company.updated_at?.toISOString(),
-          (err: unknown) => {
-            if (err) {
+          (err: any) => {
+            if (err?.errno === 19 && err?.code === 'SQLITE_CONSTRAINT') {
+              console.log(`Company ${company.name} já existe no banco.`);
+            } else if (err) {
               console.error('Erro ao inserir registro:', err);
             } else {
               console.log(`Company ${company.name} inserido com sucesso.`);

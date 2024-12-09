@@ -3,7 +3,7 @@ declare interface Coords {
   lng: string;
 }
 declare interface UserAddress {
-  id: number;
+  id: number | undefined;
   street: string;
   suite: string;
   city: string;
@@ -23,7 +23,7 @@ declare interface User {
   name: string;
   userName: string;
   email: string;
-  addres: UserAddress;
+  address: UserAddress;
   phone: string;
   website: string;
   company: Company;

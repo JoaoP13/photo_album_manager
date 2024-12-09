@@ -14,7 +14,7 @@ async function createAlbumTable() {
           CREATE TABLE IF NOT EXISTS 'Album' (
             'id' int PRIMARY KEY,
             'id_user' int,
-            'name' varchar(100),
+            'title' varchar(100),
             'created_at' timestamp,
             'updated_at' timestamp,
             'deleted_at' timestamp
@@ -36,7 +36,6 @@ async function createAlbumTable() {
       );
     });
   } catch (error) {
-    console.log(error);
     throw new SqLiteAccessError('Erro ao criar as tabelas!', 500);
   }
 }

@@ -1,8 +1,9 @@
 interface User {
+  id: number;
   name: string;
-  userName: string;
+  username: string;
   email: string;
-  addres: UserAddress;
+  address: UserAddress;
   phone: string;
   website: string;
   company: Company;
