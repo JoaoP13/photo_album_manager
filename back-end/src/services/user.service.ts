@@ -10,6 +10,33 @@ type UserId = {
 class UserService {
   constructor() {}
 
+  async list(): Promise<User[] | undefined> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+
+      return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM User WHERE deleted_at IS NULL';
+
+        db.all(query, [], (err: any, rows: User[] | undefined) => {
+          db.close((err) => {
+            err
+              ? console.error('Erro ao fechar o banco de dados:', err)
+              : console.log('Banco de dados fechado com sucesso.');
+          });
+
+          if (err) {
+            return reject(err);
+          }
+          resolve(rows);
+        });
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
+
   async listIds(): Promise<UserId[] | undefined> {
     let db: Database;
 

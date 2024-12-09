@@ -30,7 +30,6 @@ async function createCompanyTable() {
           if (err) {
             reject(err);
           } else {
-            console.log('Tabela criada ou já existente');
             resolve();
           }
         },

@@ -1,8 +1,9 @@
 import { Database } from 'sqlite3';
 import { openSqLiteConnection } from '..';
-import AddressService from '../../services/user.service';
+import { isEmailValid } from '../../validators/basic.validator';
 import SqLiteAccessError from '../../error/SqLiteAccessError';
 import { User } from '../models/User';
+import ValidatorError from '../../error/ValidatorError';
 
 import('node-fetch');
 
@@ -18,6 +19,10 @@ async function fetchUserData(): Promise<User[]> {
 
     return data.length
       ? data.map((element: User) => {
+          if (!isEmailValid(element.email)) {
+            throw new ValidatorError('O e-mail informado é inválido.', 400);
+          }
+
           return {
             id: element.id,
             name: element.name,

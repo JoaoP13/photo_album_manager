@@ -13,7 +13,7 @@ userRouter.get(
       response,
     );
 
-    userController.list();
+    userController.listUsers();
   },
 );
 

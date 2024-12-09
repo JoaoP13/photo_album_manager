@@ -32,7 +32,6 @@ async function createPhotoTable() {
           if (err) {
             reject(err);
           } else {
-            console.log('Tabela criada ou já existente');
             resolve();
           }
         },

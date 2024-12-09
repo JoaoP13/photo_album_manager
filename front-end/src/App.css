@@ -1,0 +1,45 @@
+.span-desenvolvedor {
+  color: rgb(192, 192, 192);
+  font-size: 15px;
+  position: absolute;
+  right: 40%;
+  bottom: 0px;
+}
+
+a:link {
+  color: rgb(192, 192, 192);
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(192, 192, 192);
+  text-decoration: none;
+}
+
+.main {
+  position: relative;
+  top: 10%;
+  left: 5%;
+  padding: 90px 0px 9.3vh 30px;
+  width: 95%;
+  max-height: 50%;
+}
+
+img {
+  cursor: pointer;
+}
+
+.dashboard {
+  padding: 50px 0 0 0;
+}
+
+.main-div {
+  max-height: 50;
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    max-height: 80vh !important;
+    overflow-y: hidden !important;
+  }
+}
