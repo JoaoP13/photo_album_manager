@@ -10,7 +10,8 @@
     "format": "eslint src/**/*.ts --fix",
     "dev": "nodemon ./src/server.ts",
     "build": "tsc",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "init-db": "node ./src/database/scripts/initdb.ts"
   },
   "husky": {
     "hooks": {
@@ -20,9 +21,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
@@ -30,6 +34,8 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/morgan": "^1.9.9",
+    "@types/node-fetch": "^2.6.12",
+    "@types/sqlite3": "^3.1.11",
     "eslint": "^9.16.0",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
