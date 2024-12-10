@@ -11,7 +11,12 @@ const theme = createTheme({
 
 const App = () => {
   return (
-    <div className="main-div">
+    <div
+      className="main-div"
+      style={{
+        width: "100vw",
+      }}
+    >
       <ThemeProvider theme={theme}>
         <Routes />
       </ThemeProvider>

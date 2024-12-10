@@ -101,9 +101,7 @@ async function seedCompany(): Promise<void> {
     });
 
     db.close((err) => {
-      err
-        ? console.error('Erro ao fechar o banco de dados:', err)
-        : console.log('Banco de dados fechado com sucesso.');
+      if (err) console.error('Erro ao fechar o banco de dados:', err);
     });
   } catch (error) {
     throw new SqLiteAccessError('Erro ao popular as Companys!', 500);

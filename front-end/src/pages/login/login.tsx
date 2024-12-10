@@ -19,9 +19,11 @@ import { isMobile } from "react-device-detect";
 import Swal from "sweetalert2";
 
 function Login() {
-  let [user, setUser] = React.useState({});
+  let [user, setUser] = React.useState<Record<string, string> | Object>({});
   const [email, setEmail] = React.useState("");
-  const [usersOptions, setUsersOptions] = React.useState<Array<Object>>([]);
+  const [usersOptions, setUsersOptions] = React.useState<
+    Array<Record<string, string>>
+  >([]);
 
   let navigate = useNavigate();
 
@@ -46,6 +48,10 @@ function Login() {
   }, []);
 
   const handleChangeUserSelected = (event: any) => {
+    const tmpUser: any = usersOptions.find(
+      (el: any) => el.email === event.target.value
+    );
+    setUser(tmpUser);
     setEmail(event.target.value);
   };
 
@@ -55,10 +61,11 @@ function Login() {
     }
 
     try {
-      //   user = await login(email, password);
+      if (Object.keys(user).length > 0) {
+        localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/home");
-      setUser(user);
+        navigate("/users");
+      }
     } catch (error: any) {
       if (error.status === 500) {
         Swal.fire({
@@ -177,7 +184,7 @@ function Login() {
                       >
                         {usersOptions.map((item: any, index: number) => {
                           return (
-                            <MenuItem value={item.id} key={`item-${index}`}>
+                            <MenuItem value={item.email} key={`item-${index}`}>
                               {item.email}
                             </MenuItem>
                           );

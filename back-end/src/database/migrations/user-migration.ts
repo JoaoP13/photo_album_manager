@@ -28,9 +28,7 @@ async function createUserTable() {
           );`,
         (err) => {
           db.close((err) => {
-            err
-              ? console.error('Erro ao fechar o banco de dados:', err)
-              : console.log('Banco de dados fechado com sucesso.');
+            if (err) console.error('Erro ao fechar o banco de dados:', err);
           });
 
           if (err) {
