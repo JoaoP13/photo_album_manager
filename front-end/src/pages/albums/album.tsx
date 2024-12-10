@@ -223,7 +223,7 @@ function AlbumList() {
               <GenericTable
                 rows={albumsToPopulateTable}
                 columns={getAlbumTableHeader()}
-                canEdit={true}
+                canEdit={false}
                 canViewData={true}
                 canDelet={true}
                 viewDataLabel="View photos"
