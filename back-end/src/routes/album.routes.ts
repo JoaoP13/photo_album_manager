@@ -21,8 +21,26 @@ albumRouter.get(
   '/:id',
   authMiddleware,
   (request: express.Request, response: express.Response): any => {
-    const controller: AlbumController = new AlbumController(request, response);
-    controller.getById();
+    const albumController: AlbumController = new AlbumController(
+      request,
+      response,
+    );
+    albumController.getByIdUser();
+  },
+);
+
+albumRouter.delete(
+  '/',
+  authMiddleware,
+  (request: express.Request, response: express.Response): any => {
+    const albumController: AlbumController = new AlbumController(
+      request,
+      response,
+    );
+
+    albumController.delete({
+      id: request.query.id,
+    });
   },
 );
 

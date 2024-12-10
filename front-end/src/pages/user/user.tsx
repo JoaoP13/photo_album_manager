@@ -12,16 +12,16 @@ import useCheckTabletScreen from "../../components/mobileChecker/tabletChecker";
 
 function UserList() {
   const [usersToPopulateTable, setUsersToPopulateTable] = React.useState<
-    Array<Record<string, string>>
+    UserAPIResponse[] | undefined
   >([]);
 
   let navigate = useNavigate();
-  const isSmartphone: any = useCheckSmartphoneScreen();
-  const isTablet: any = useCheckTabletScreen();
+  const isSmartphone = useCheckSmartphoneScreen();
+  const isTablet = useCheckTabletScreen();
 
   useEffect(() => {
-    async function getCollectStatusForDashboard() {
-      let result = [];
+    async function getUsers() {
+      let result: UserAPIResponse[] = [];
 
       try {
         result = await getAllUsers();
@@ -36,7 +36,7 @@ function UserList() {
       setUsersToPopulateTable(result);
     }
 
-    getCollectStatusForDashboard();
+    getUsers();
   }, []);
 
   function onClickViewData(element: any) {

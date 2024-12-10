@@ -27,7 +27,7 @@ interface ColumnProps {
 }
 
 interface GenericTableProps {
-  rows: any[];
+  rows: any[] | undefined | any;
   headerColor?: string;
   viewDataLabel?: string;
   columns: ColumnProps[];

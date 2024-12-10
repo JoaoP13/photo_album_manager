@@ -20,9 +20,11 @@ class UserController extends BasicController {
 
       return result;
     } catch (err: any) {
-      this.response.status(err.status || 400).send({
-        message: 'Ocorreu um erro ao listar os dados.',
-      });
+      this.response.status(err.status || 400).send([
+        {
+          message: 'Ocorreu um erro ao listar os dados.',
+        },
+      ]);
 
       return [];
     }

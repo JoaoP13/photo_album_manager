@@ -33,7 +33,7 @@ class AlbumService {
     }
   }
 
-  async getById(id: any): Promise<Album[] | undefined> {
+  async getByIdUser(id: any): Promise<Album[] | undefined> {
     let db: Database;
 
     try {
@@ -41,7 +41,7 @@ class AlbumService {
 
       return new Promise((resolve, reject) => {
         const query =
-          'SELECT * FROM Album a INNER JOIN User u ON u.id = a.id_user WHERE a.deleted_at IS NULL AND u.deleted_at IS NULL AND a.id_user = ?';
+          'SELECT a.id, a.id_user, title, name, email FROM Album a INNER JOIN User u ON u.id = a.id_user WHERE a.deleted_at IS NULL AND u.deleted_at IS NULL AND a.id_user = ?';
 
         db.all(query, [id], (err: any, rows: Album[] | undefined) => {
           db.close((err) => {
@@ -52,6 +52,31 @@ class AlbumService {
             return reject(err);
           }
           resolve(rows);
+        });
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
+
+  async delete(id: any): Promise<void> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+
+      return new Promise((resolve, reject) => {
+        const query = 'UPDATE Album SET deleted_at = ? WHERE id = ?';
+
+        db.run(query, [new Date().toISOString(), id], (err: any) => {
+          db.close((err) => {
+            if (err) console.error('Erro ao fechar o banco de dados:', err);
+          });
+
+          if (err) {
+            return reject(err);
+          }
+          resolve();
         });
       });
     } catch (error: any) {

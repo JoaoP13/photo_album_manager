@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import ResponsiveAppBar from "../../components/appbar/appBar";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
-import { getAllAlbums, getAlbumFromUserId } from "../../services/album";
+import {
+  getAllAlbums,
+  getAlbumFromUserId,
+  deleteAlbum,
+} from "../../services/album";
 import GenericTable from "../../components/genericTable/genericTable";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
@@ -13,11 +17,13 @@ import useCheckTabletScreen from "../../components/mobileChecker/tabletChecker";
 
 function AlbumList() {
   const [albumsToPopulateTable, setUsersToPopulateTable] = React.useState<
-    Array<Record<string, string>>
+    UserAPIResponse | undefined | Array<Object>
   >([]);
+  const [update, setUpdate] = React.useState<boolean>(true);
   const { id } = useParams();
 
   let navigate = useNavigate();
+  let user: any = JSON.parse(localStorage.getItem("user") || "{}");
   const isSmartphone: any = useCheckSmartphoneScreen();
   const isTablet: any = useCheckTabletScreen();
 
@@ -43,10 +49,68 @@ function AlbumList() {
     }
 
     getCollectStatusForDashboard();
-  }, [id]);
+  }, [id, update]);
 
-  function onClickEdit(element: any) {
-    navigate(`/user/edit/${element.id}`);
+  function onClickEdit(element: UserAlbum) {
+    if (element.id_user !== user.id) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "You can only edit your own albums :(",
+      });
+    }
+  }
+
+  function onClickViewData(element: UserAlbum) {
+    navigate(`/photo/${element.id}/${element.id_user === user.id}`);
+  }
+
+  function onClickDelete(element: UserAlbum) {
+    console.log(element);
+
+    if (element.id_user !== user.id) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "You can only delete your own albums :(",
+      });
+    } else {
+      Swal.fire({
+        title: "Are you sure that you want to delete this album?",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        confirmButtonColor: "#990000",
+        showCancelButton: true,
+      }).then(async (result) => {
+        if (result.value) {
+          try {
+            await deleteAlbum({
+              id: element.id.toString(),
+            });
+
+            await Swal.fire({
+              title: "Success!",
+              text: `Success to delete the album!`,
+              icon: "success",
+              showConfirmButton: false,
+              position: "center",
+              timer: 3000,
+              width: 400,
+            });
+
+            setUpdate(!update);
+          } catch (err: any) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.message,
+            });
+          }
+        } else if (result.dismiss) {
+          return;
+        }
+      });
+    }
   }
 
   function getAlbumTableHeader() {
@@ -57,7 +121,7 @@ function AlbumList() {
         dataKey: "name",
       },
       {
-        width: 10,
+        width: 30,
         label: "Email",
         dataKey: "email",
       },
@@ -135,7 +199,10 @@ function AlbumList() {
                 canEdit={true}
                 canViewData={true}
                 canDelet={true}
+                viewDataLabel="View photos"
+                onClickViewData={(el: any) => onClickViewData(el)}
                 onClickEdit={(el: any) => onClickEdit(el)}
+                onClickDelete={(el: any) => onClickDelete(el)}
               ></GenericTable>
             </Grid>
           </Grid>

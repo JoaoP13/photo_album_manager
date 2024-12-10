@@ -15,8 +15,6 @@ const loggout = () => {
 const host = "http://localhost:3008";
 
 async function get(url: string, params: any = {}) {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   try {
     const result = await axios.get(host + url, {
       params,
@@ -169,14 +167,9 @@ async function patch(url: string, params: any = {}) {
 }
 
 async function del(url: string, params: any = {}) {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   try {
     const result = await axios.delete(host + url, {
       params,
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
     });
 
     const data = await result.data;
