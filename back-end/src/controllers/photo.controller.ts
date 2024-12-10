@@ -3,6 +3,13 @@ import BasicController from './basic.controller';
 import { Photo } from '../database/models/Photo';
 import PhotoService from '../services/photo.service';
 
+type CreatePhotoPayload = {
+  title: string;
+  idAlbum: string;
+  url: string;
+  thumbnailUrl: string;
+};
+
 class PhotoController extends BasicController {
   photoService: PhotoService;
 
@@ -44,6 +51,25 @@ class PhotoController extends BasicController {
     } catch (err: any) {
       this.response.status(err.status || 400).send({
         message: 'Ocorreu um erro ao deletar os dados. Contate o suporte',
+      });
+    }
+  }
+
+  async create(): Promise<void | object> {
+    const { title, idAlbum, url, thumbnailUrl }: CreatePhotoPayload =
+      this.request.body.params;
+
+    try {
+      await this.photoService.create(title, idAlbum, url, thumbnailUrl);
+
+      this.response.status(200).send({
+        message: 'Sucesso ao excluir o dado',
+      });
+    } catch (err: any) {
+      console.log(err);
+
+      this.response.status(err.status || 400).send({
+        message: 'Ocorreu um erro ao salvar os dados. Contate o suporte',
       });
     }
   }

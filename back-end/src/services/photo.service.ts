@@ -57,6 +57,76 @@ class PhotoService {
       throw new ApiAccessError(error.message, 400);
     }
   }
+
+  async getMaxIdFromPhoto(): Promise<void> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+
+      return new Promise((resolve, reject) => {
+        const query = 'SELECT MAX(id) as id FROM Photo';
+
+        db.get(query, [], (err: any, row: any) => {
+          db.close((err) => {
+            if (err) console.error('Erro ao fechar o banco de dados:', err);
+          });
+
+          if (err) {
+            return reject(err);
+          }
+          resolve(row);
+        });
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
+
+  async create(
+    title: string,
+    idAlbum: string,
+    url: string,
+    thumbnailUrl: string,
+  ): Promise<void> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+      let maxId: any = await this.getMaxIdFromPhoto();
+      console;
+
+      return new Promise((resolve, reject) => {
+        const query =
+          'INSERT INTO Photo (id, id_album, title, url, thumbnail_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
+        db.run(
+          query,
+          [
+            +maxId.id + 1,
+            idAlbum,
+            title,
+            url,
+            thumbnailUrl,
+            new Date().toISOString(),
+            new Date().toISOString(),
+          ],
+          (err: any) => {
+            db.close((err) => {
+              if (err) console.error('Erro ao fechar o banco de dados:', err);
+            });
+
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          },
+        );
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
 }
 
 export default PhotoService;

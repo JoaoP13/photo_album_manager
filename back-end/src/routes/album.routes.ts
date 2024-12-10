@@ -4,6 +4,18 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 
 const albumRouter: express.Router = express.Router();
 
+albumRouter.post(
+  '/',
+  authMiddleware,
+  (request: express.Request, response: express.Response): any => {
+    const albumController: AlbumController = new AlbumController(
+      request,
+      response,
+    );
+    albumController.create();
+  },
+);
+
 albumRouter.get(
   '/',
   authMiddleware,

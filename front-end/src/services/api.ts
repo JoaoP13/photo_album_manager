@@ -61,18 +61,8 @@ async function get(url: string, params: any = {}) {
 }
 
 async function post(url: string, params: any = {}) {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   try {
-    const result = await axios.post(
-      host + url,
-      { params },
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const result = await axios.post(host + url, { params });
 
     const data = await result.data;
 

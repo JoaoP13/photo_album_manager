@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Button } from "@mui/material";
 
 import ResponsiveAppBar from "../../components/appbar/appBar";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
@@ -12,6 +12,7 @@ import GenericTable from "../../components/genericTable/genericTable";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 import useCheckSmartphoneScreen from "../../components/mobileChecker/smartPhoneChecker";
 import useCheckTabletScreen from "../../components/mobileChecker/tabletChecker";
 
@@ -184,6 +185,32 @@ function AlbumList() {
                     color: "#3C3633",
                   }}
                 />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={12} sm={12}>
+              <Box
+                sx={{
+                  marginTop: "4vh",
+                  width: "95%",
+                }}
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <Button
+                  sx={{
+                    backgroundColor: "#F8FAE5",
+                    border: 1,
+                    ":hover": {
+                      borderColor: "black",
+                    },
+                    color: "#3C3633",
+                    borderRadius: "3px",
+                  }}
+                  startIcon={<AddIcon />}
+                  onClick={() => navigate("/albums/add")}
+                >
+                  Add album
+                </Button>
               </Box>
             </Grid>
             <Grid

@@ -1,4 +1,4 @@
-import { get, del } from "./api";
+import { get, del, post } from "./api";
 import RequestError from "./errors/RequestError";
 
 type PayloadPhotoId = {
@@ -8,6 +8,13 @@ type PayloadPhotoId = {
 type PayloadDeletePhoto = {
   idAlbum: string | undefined;
   url: string | undefined;
+};
+
+type CreatePhotoPayload = {
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+  idAlbum: string | undefined;
 };
 
 async function getPhotosFromAlbumId(payload: PayloadPhotoId) {
@@ -45,4 +52,18 @@ async function deleteAPhotoFromAlbum(payload: PayloadDeletePhoto) {
   return result;
 }
 
-export { getPhotosFromAlbumId, deleteAPhotoFromAlbum };
+async function createPhoto(payload: CreatePhotoPayload) {
+  const result: any = await post("/api/photo", payload);
+
+  if (!result) {
+    return [];
+  }
+
+  if (result.status === 400 || result.status === 401 || result.status === 500) {
+    throw new RequestError(result.message, result.status);
+  }
+
+  return result;
+}
+
+export { getPhotosFromAlbumId, deleteAPhotoFromAlbum, createPhoto };

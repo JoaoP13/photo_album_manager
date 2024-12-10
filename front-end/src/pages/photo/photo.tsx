@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Button } from "@mui/material";
 
 import ResponsiveAppBar from "../../components/appbar/appBar";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import GenericTable from "../../components/genericTable/genericTable";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 import { deleteAPhotoFromAlbum } from "../../services/photo";
 import useCheckSmartphoneScreen from "../../components/mobileChecker/smartPhoneChecker";
 import useCheckTabletScreen from "../../components/mobileChecker/tabletChecker";
@@ -18,6 +20,7 @@ function PhotoList() {
   const [update, setUpdate] = React.useState<boolean>(true);
   const { idAlbum, isUserVieweingYourOwnAlbum } = useParams();
 
+  let navigate = useNavigate();
   const isSmartphone: any = useCheckSmartphoneScreen();
   const isTablet: any = useCheckTabletScreen();
 
@@ -160,6 +163,34 @@ function PhotoList() {
                 />
               </Box>
             </Grid>
+            {isUserVieweingYourOwnAlbum === "true" && (
+              <Grid item xs={12} md={12} sm={12}>
+                <Box
+                  sx={{
+                    marginTop: "4vh",
+                    width: "95%",
+                  }}
+                  display="flex"
+                  justifyContent="flex-end"
+                >
+                  <Button
+                    sx={{
+                      backgroundColor: "#F8FAE5",
+                      border: 1,
+                      ":hover": {
+                        borderColor: "black",
+                      },
+                      color: "#3C3633",
+                      borderRadius: "3px",
+                    }}
+                    startIcon={<AddIcon />}
+                    onClick={() => navigate(`/photo/${idAlbum}/add`)}
+                  >
+                    Add photo
+                  </Button>
+                </Box>
+              </Grid>
+            )}
             <Grid
               item
               xs={12}

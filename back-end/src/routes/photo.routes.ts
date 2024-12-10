@@ -4,6 +4,18 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 
 const photoRouter: express.Router = express.Router();
 
+photoRouter.post(
+  '/',
+  authMiddleware,
+  (request: express.Request, response: express.Response): any => {
+    const photoController: PhotoController = new PhotoController(
+      request,
+      response,
+    );
+    photoController.create();
+  },
+);
+
 photoRouter.get(
   '/:idAlbum',
   authMiddleware,

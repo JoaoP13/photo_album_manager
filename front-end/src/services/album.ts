@@ -1,8 +1,13 @@
-import { del, get } from "./api";
+import { del, get, post } from "./api";
 import RequestError from "./errors/RequestError";
 
 type PayloadAlbumId = {
   id: string;
+};
+
+type CreateAlbumPayload = {
+  title: string;
+  idUser: string;
 };
 
 async function getAllAlbums() {
@@ -57,4 +62,18 @@ async function deleteAlbum(payload: PayloadAlbumId) {
   return result;
 }
 
-export { getAllAlbums, getAlbumFromUserId, deleteAlbum };
+async function createAlbum(payload: CreateAlbumPayload) {
+  const result: any = await post("/api/albums", payload);
+
+  if (!result) {
+    return [];
+  }
+
+  if (result.status === 400 || result.status === 401 || result.status === 500) {
+    throw new RequestError(result.message, result.status);
+  }
+
+  return result;
+}
+
+export { getAllAlbums, getAlbumFromUserId, deleteAlbum, createAlbum };

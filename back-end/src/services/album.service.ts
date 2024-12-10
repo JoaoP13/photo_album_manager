@@ -83,6 +83,69 @@ class AlbumService {
       throw new ApiAccessError(error.message, 400);
     }
   }
+
+  async getMaxIdFromAlbum(): Promise<void> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+
+      return new Promise((resolve, reject) => {
+        const query = 'SELECT MAX(id) as id FROM Album';
+
+        db.get(query, [], (err: any, row: any) => {
+          db.close((err) => {
+            if (err) console.error('Erro ao fechar o banco de dados:', err);
+          });
+
+          if (err) {
+            return reject(err);
+          }
+          resolve(row);
+        });
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
+
+  async create(title: string, idUser: string): Promise<void> {
+    let db: Database;
+
+    try {
+      db = await openSqLiteConnection();
+      let maxId: any = await this.getMaxIdFromAlbum();
+      console;
+
+      return new Promise((resolve, reject) => {
+        const query =
+          'INSERT INTO Album (id, title, id_user, created_at, updated_at) VALUES (?, ?, ?, ?, ?)';
+
+        db.run(
+          query,
+          [
+            +maxId.id + 1,
+            title,
+            idUser,
+            new Date().toISOString(),
+            new Date().toISOString(),
+          ],
+          (err: any) => {
+            db.close((err) => {
+              if (err) console.error('Erro ao fechar o banco de dados:', err);
+            });
+
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          },
+        );
+      });
+    } catch (error: any) {
+      throw new ApiAccessError(error.message, 400);
+    }
+  }
 }
 
 export default AlbumService;

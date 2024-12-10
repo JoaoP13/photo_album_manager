@@ -3,6 +3,10 @@ import BasicController from './basic.controller';
 import AlbumService from '../services/album.service';
 import { Album } from '../database/models/Album';
 
+type CreateAlbumPayload = {
+  title: string;
+  idUser: string;
+};
 class AlbumController extends BasicController {
   albumService: AlbumService;
 
@@ -58,6 +62,24 @@ class AlbumController extends BasicController {
     } catch (err: any) {
       this.response.status(err.status || 400).send({
         message: 'Ocorreu um erro ao deletar os dados. Contate o suporte',
+      });
+    }
+  }
+
+  async create(): Promise<void | object> {
+    const { title, idUser }: CreateAlbumPayload = this.request.body.params;
+
+    try {
+      await this.albumService.create(title, idUser);
+
+      this.response.status(200).send({
+        message: 'Sucesso ao excluir o dado',
+      });
+    } catch (err: any) {
+      console.log(err);
+
+      this.response.status(err.status || 400).send({
+        message: 'Ocorreu um erro ao salvar os dados. Contate o suporte',
       });
     }
   }
